@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Bags_Accessories.Models.Accessorie>
+
+@{
+    ViewData["Title"] = "AllAccessorie";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>აქსესუარები</h1>
+<div class="input-group md-form form-sm form-2 pl-0">
+    <form id="searchForm" asp-controller="admin" asp-action="allbag" method="get">
+        <input name="searchText" class="form-control my-0 py-1 table-bordered" type="text" placeholder="Search" arial-label="Search" style="width:400px">
+        <div class="input-group-append">
+
+            <button id="btnSearch" class="btn btn-primary">მოძებნა</button>
+        </div>
+    </form>
+</div>
+<p>
+
+    <a asp-action="AccessorieAdd">აქსესუარის დამატება</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ტიპი
+            </th>
+            <th>
+                სახელი
+            </th>
+            <th>
+                ფასი
+            </th>
+            <th>
+                რაოდენობა
+            </th>
+            <th>
+                სურათი
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+
+                    @if (item.Gender == 1)
+                    {
+                        <label>ქალი</label>
+                    }
+                    else if (item.Gender == 2)
+                    {
+                        <label>კაცი</label>
+                    }
+                    else if (item.Gender == 3)
+                    {
+                        <label>ბავშვი</label>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price) - ლარი
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity) - ცალი
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageName)
+                </td>
+                <td>
+                    <a asp-action="AccessorieEdit" asp-route-id="@item.ID">შესწორება</a> |
+                    <a asp-action="AccessorieDelete" asp-route-id="@item.ID">წაშლა</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,41 @@
+﻿@model Accessorie
+
+@{
+    ViewData["Title"] = "Accessorie Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-banner" id="top">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <div>
+                    <img src="~/ImageUpload/@Model.ImageName" />
+                </div>
+                <div>
+                    @if (Model.Gender == 1)
+                    {
+                        <label>ტიპი: ქალი</label>
+                    }
+                    else if (Model.Gender == 2)
+                    {
+                        <label>ტიპი: კაცი</label>
+                    }
+                    else if (Model.Gender == 3)
+                    {
+                        <label>ტიპი: ბავშვი</label>
+                    }
+                </div>
+                <div>
+                    სახელი: @Model.Name
+                </div>
+                <div>
+                    ფასი:  @Model.Price ლარი
+                </div>
+                <div>
+                    დარჩენილი რაოდენობა: @Model.Quantity
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

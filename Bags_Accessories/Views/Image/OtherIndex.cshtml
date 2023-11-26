@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "OtherIndex";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h3 style="color:black">მთავარი გვერდის სურათების მართვა</h3>
+
+@* <img src="~/ImageUpload/pic1.jpg" alt="User Avatar" class="" style="width:450px;height:300px"> *@
+<form method="post" enctype="multipart/form-data" asp-asp-controller="Img" asp-action="Otherindex">
+    <input type="file" name="imgfile" />
+    <input type="hidden" name="imgIndex" value="1" />
+    <input type="submit" value="Upload.." />
+    <hr/>
+</form>
+   @*  <h3 style="color:green">@ViewBag.Message1</h3>
+
+    <img src="~/ImageUpload/pic2.jpg" alt="User Avatar" class="" style="width:450px;height:300px">
+</form>
+<form method="post" enctype="multipart/form-data" asp-asp-controller="Img" asp-action="Index">
+    <input type="file" name="imgfile" />
+    <input type="hidden" name="imgIndex" value="2" />
+    <input type="submit" value="Upload.." />
+    <hr />
+
+    <h3 style="color:green">@ViewBag.Message2</h3>
+
+    <img src="~/ImageUpload/pic3.jpg" alt="User Avatar" class="" style="width:450px;height:300px">
+</form>
+<form method="post" enctype="multipart/form-data" asp-asp-controller="Img" asp-action="Index">
+    <input type="file" name="imgfile" />
+    <input type="hidden" name="imgIndex" value="3" />
+    <input type="submit" value="Upload.." />
+    <hr />
+
+    <h3 style="color:green">@ViewBag.Message3</h3>
+
+    <img src="~/ImageUpload/pic4.jpg" alt="User Avatar" class="" style="width:450px;height:300px">
+</form>
+<form method="post" enctype="multipart/form-data" asp-asp-controller="Img" asp-action="Index">
+    <input type="file" name="imgfile" />
+    <input type="hidden" name="imgIndex" value="4" />
+    <input type="submit" value="Upload.." />
+    <hr />
+
+    <h3 style="color:green">@ViewBag.Message4</h3>
+
+    <img src="~/ImageUpload/pic5.jpg" alt="User Avatar" class="" style="width:450px;height:300px">
+</form>
+<form method="post" enctype="multipart/form-data" asp-asp-controller="Img" asp-action="Index">
+    <input type="file" name="imgfile" />
+    <input type="hidden" name="imgIndex" value="5" />
+    <input type="submit" value="Upload.." />
+    <hr />
+    <h3 style="color:green">@ViewBag.Message5</h3>
+</form>
+
+<h3 style="color:red">@ViewBag.ErrorText</h3> *@

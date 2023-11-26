@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Bags_Accessories.Models.Bag>
+
+@{
+    ViewData["Title"] = "KidsBag";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>ბავშვის ჩანთები</h1>
+
+<div class="input-group md-form form-sm form-2 pl-0">
+<form id="searchForm" asp-controller="admin" asp-action="KidsBag" method="get">
+    <input name="searchText" class="form-control my-0 py-1 table-bordered" type="text" placeholder="Search" arial-label="Search" style="width:400px">
+    <div class="input-group-append">
+
+        <button id="btnSearch" class="btn btn-primary">მოძებნა</button>
+    </div>
+</form>
+</div>
+<p>
+
+<p>
+    <a asp-action="BagAdd">ჩანთის დამატება</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                    @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.ImageName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+
+                        @if (item.Gender == 1)
+                        {
+                        <label>ქალი</label>
+                        }
+                        else if (item.Gender == 2)
+                        {
+                        <label>კაცი</label>
+                        }
+                        else if (item.Gender == 3)
+                        {
+                        <label>ბავშვი</label>
+                        }
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.ImageName)
+                </td>
+                <td>
+                    <a asp-action="BagEdit" asp-route-id="@item.ID">შესწორება</a> |
+                    <a asp-action="BagDelete" asp-route-id="@item.ID">წაშლა</a>
+                </td>
+            </tr>
+            }
+    </tbody>
+</table>
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+
+        <li class="page-item"><a class="page-link" href="/Admin/KidsBag/?searchText=@ViewBag.SearchText&pageIndex=@(ViewBag.PageIndex-1)">უკან</a></li>
+            @for (int i = 1; i <= ViewBag.ProductsTotalCount; i++)
+            {
+            <li class="page-item @(ViewBag.PageIndex==i?"active":"")"><a class="page-link" href="/Admin/KidsBag/?searchText=@ViewBag.SearchText&pageIndex=@i">@i</a></li>
+            }
+        <li class="page-item"><a class="page-link" href="/Admin/KidsBag/?searchText=@ViewBag.SearchText&pageIndex=@(ViewBag.PageIndex+1)">წინ</a></li>
+    </ul>
+</nav>
