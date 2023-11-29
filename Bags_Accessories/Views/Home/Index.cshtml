@@ -159,13 +159,13 @@
                                 <div class="thumb">
                                     <div class="hover-content">
                                         <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
+                                            <li><a href="@("Home\\DetailsBag\\"+item.ID)"><i class="fa fa-eye"></i></a></li>
+                                            @* <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> *@
+                                            <li><a href=""><i class="fa fa-shopping-cart"></i></a></li>
                                         </ul>
                                     </div>
                                     @* <img src="assets/images/men-01.jpg" alt=""> *@
-                                    <img src="~/productImages/@(item.ImageName)" alt="">
+                                    <a href="@("Home\\DetailsBag\\"+item.ID)"><img src="~/productImages/WomenBagImg@(item.ImageName)" alt=""></a>
                                 </div>
                                 <div class="down-content">
                                     <h4><a href="@("Home\\DetailsBag\\"+item.ID)">@item.Name</a></h4>
@@ -204,12 +204,12 @@
                                 <div class="thumb">
                                     <div class="hover-content">
                                         <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
+                                            <li><a href="@("Home\\DetailsBag\\"+item.ID)"><i class="fa fa-eye"></i></a></li>
+                                            @* <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> *@
+                                            <li><a href=""><i class="fa fa-shopping-cart"></i></a></li>
                                         </ul>
                                     </div>
-                                    <img src="assets/images/women-01.jpg" alt="">
+                                    <a href="@("Home\\DetailsBag\\"+item.ID)"><img src="assets/images/women-01.jpg" alt=""></a>
                                 </div>
                                 <div class="down-content">
                                     <h4><a href="@("Home\\DetailsBag\\"+item.ID)">@item.Name</a></h4>
@@ -248,12 +248,12 @@
                                 <div class="thumb">
                                     <div class="hover-content">
                                         <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
+                                            <li><a href="@("Home\\DetailsBag\\"+item.ID)"><i class="fa fa-eye"></i></a></li>
+                                           @*  <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> *@
+                                            <li><a href=""><i class="fa fa-shopping-cart"></i></a></li>
                                         </ul>
                                     </div>
-                                    <img src="assets/images/women-01.jpg" alt="">
+                                    <a href="@("Home\\DetailsBag\\"+item.ID)"><img src="assets/images/women-01.jpg" alt=""></a>
                                 </div>
                                 <div class="down-content">
                                     <h4><a href="@("Home\\DetailsBag\\"+item.ID)">@item.Name</a></h4>
@@ -278,22 +278,3 @@
         });
     </script>
 }
-@* <script>
-        function searchTest() {
-
-            $.ajax({
-                type: 'GET',
-                url: '/Home/SearchProduct',
-                data: JSON.stringify(_data),
-                contentType: 'application/json',
-                dataType: "JSON",
-                success: function (r) {
-                    console.log("RESULT", r);
-                },
-                error: function (xhr, status, error) {
-                    var err = eval("(" + xhr.responseText + ")");
-                    alert(err.Message);
-                }
-            });
-        }
-    </script> *@

@@ -25,23 +25,7 @@ namespace Bags_Accessories.Controllers
         {
             return View();
         }
-        public IActionResult index2()
-        {
-            return View();
-        }
-        public IActionResult index3()
-        {
-            return View();
-        }
-        public IActionResult starter()
-        {
-            return View();
-        }
-
-        //public IActionResult ImageControll(IFormFile file)
-        //{
-        //    return View();
-        //}
+      
 
         [HttpGet]
         public IActionResult BagAdd()

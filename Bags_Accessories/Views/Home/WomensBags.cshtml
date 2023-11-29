@@ -11,18 +11,18 @@
             <div class="col-lg-12">
                 @* <div class="inner-content"> *@
                 <img src="~/assets/PageImg/@ViewBag.OtherPageImg1">
-                    <h2>Check Our Products</h2>
-                    <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
-                </div>
+                <h2>Check Our Products</h2>
+                <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
             </div>
         </div>
     </div>
 </div>
+
 <!-- ***** Main Banner Area End ***** -->
 <!-- ***** Products Area Starts ***** -->
 <div class="input-group md-form form-sm form-2 pl-0">
-    <form id="searchForm" asp-controller="Home" asp-action="WomensBags" method="post">
-        <input name="search" class="form-control my-0 py-1 table-bordered" type="text" placeholder="Search" arial-label="Search" style="width:800px">
+    <form id="searchForm" asp-controller="admin" asp-action="allbag" method="get">
+        <input name="searchText" class="form-control my-0 py-1 table-bordered" type="text" placeholder="Search" arial-label="Search" style="width:400px">
         <div class="input-group-append">
 
             <button id="btnSearch" class="btn btn-primary">მოძებნა</button>
@@ -31,75 +31,59 @@
 </div>
 <p>
 
-<section class="section" id="products">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-heading">
-                    <h2>Our Latest Products</h2>
-                    <span>Check out all of our products.</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            @foreach (var item in Model)
-            {
-
-                <div class="col-lg-4">
-                    <div class="item">
-                        <div class="thumb">
-                            <div class="hover-content">
-                                <ul>
-                                    <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                    <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                    <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                </ul>
-                            </div>
-                            <img src="~/productImages/@(item.ImageName)" alt="">
-                        </div>
-                        <div class="down-content">
-                            <h4>@item.Name</h4>
-                            <span>$@item.Price</span>
-                            <ul class="stars">
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                            </ul>
-                        </div>
+    <section class="section" id="products">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Our Latest Products</h2>
+                        <span>Check out all of our products.</span>
                     </div>
                 </div>
-
-            }
-        
-            <div class="col-lg-12">
-                <div class="pagination">
-                    <ul>
-                        <li>
-                            <a href="#">1</a>
-                        </li>
-                        <li class="active">
-                            <a href="#">2</a>
-                        </li>
-                        <li>
-                            <a href="#">3</a>
-                        </li>
-                        <li>
-                            <a href="#">4</a>
-                        </li>
-                        <li>
-                            <a href="#">></a>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </div>
-    </div>
-</section>
-<!-- ***** Products Area Ends ***** -->
-@section scripts {
-    <script src="/js/Search.js"></script>
-}
+        <div class="container">
+            <div class="row">
+                @foreach (var item in ViewBag.WomenBags)
+                {
+                    <div class="col-lg-4">
+                        <div class="item">
+                            <div class="thumb">
+                                <div class="hover-content">
+                                    <ul>
+                                        <li><a href="@("Home\\DetailsBag\\"+item.ID)"><i class="fa fa-eye"></i></a></li>
+                                        @* <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> *@
+                                        <li><a href=""><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <a href="@("Home\\DetailsBag\\"+item.ID)"><img src="assets/images/women-01.jpg" alt=""></a>
+                            </div>
+                            <div class="down-content">
+                                <h4><a href="@("Home\\DetailsBag\\"+item.ID)">@item.Name</a></h4>
+                                <span>@item.Price ₾</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+
+                        <li class="page-item"><a class="page-link" href="/Home/WomensBags/?searchText=@ViewBag.SearchText&pageIndex=@(ViewBag.PageIndex-1)">უკან</a></li>
+                        @for (int i = 1; i <= ViewBag.ProductsTotalCount; i++)
+                        {
+                            <li class="page-item @(ViewBag.PageIndex==i?"active":"")"><a class="page-link" href="/Home/WomensBags/?searchText=@ViewBag.SearchText&pageIndex=@i">@i</a></li>
+                        }
+                        <li class="page-item"><a class="page-link" href="/Home/WomensBags/?searchText=@ViewBag.SearchText&pageIndex=@(ViewBag.PageIndex+1)">წინ</a></li>
+                    </ul>
+                </nav>
+
+
+                    </div>
+                </div>
+            
+    </section>
+    <!-- ***** Products Area Ends ***** -->
+    @section scripts {
+        <script src="/js/Search.js"></script>
+    }

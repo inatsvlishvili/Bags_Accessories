@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bags_Accessories.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20231126162854_AddComment")]
-    partial class AddComment
+    [Migration("20231129143824_CommentAndContact")]
+    partial class CommentAndContact
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,6 +219,37 @@ namespace Bags_Accessories.Migrations
                     b.HasIndex("BagID");
 
                     b.ToTable("CommentBag");
+                });
+
+            modelBuilder.Entity("Bags_Accessories.Models.ContactUs", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("CommentTXT")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Phone")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("ContactUs");
                 });
 
             modelBuilder.Entity("Bags_Accessories.Models.Settings", b =>

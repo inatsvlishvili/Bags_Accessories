@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bags_Accessories.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20231126163132_ContactClient")]
-    partial class ContactClient
+    [Migration("20231129171249_OrderClientUserID")]
+    partial class OrderClientUserID
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -252,6 +252,59 @@ namespace Bags_Accessories.Migrations
                     b.ToTable("ContactUs");
                 });
 
+            modelBuilder.Entity("Bags_Accessories.Models.OrderClient", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("AccessorieID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BagID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CommentTXT")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasportID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Phone")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AccessorieID");
+
+                    b.HasIndex("BagID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("orderClients");
+                });
+
             modelBuilder.Entity("Bags_Accessories.Models.Settings", b =>
                 {
                     b.Property<string>("SettingName")
@@ -422,6 +475,31 @@ namespace Bags_Accessories.Migrations
                         .IsRequired();
 
                     b.Navigation("Bag");
+                });
+
+            modelBuilder.Entity("Bags_Accessories.Models.OrderClient", b =>
+                {
+                    b.HasOne("Bags_Accessories.Models.Accessorie", "Accessorie")
+                        .WithMany()
+                        .HasForeignKey("AccessorieID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bags_Accessories.Models.Bag", "Bag")
+                        .WithMany()
+                        .HasForeignKey("BagID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bags_Accessories.Areas.Identity.Data.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Accessorie");
+
+                    b.Navigation("Bag");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

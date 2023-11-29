@@ -12,10 +12,12 @@ namespace Bags_Accessories.Models
         [Required]
         public string Email { get; set; }
         [Required]
-        public string CommentTXT {  get; set; }
-        [ForeignKey("BagID")]
+        public string CommentTXT { get; set; }
         public int BagID { get; set; }
+        [ForeignKey("BagID")]
         public Bag Bag { get; set; }
         public DateTime CreatedateTime { get; set; }
+       
+
     }
 }

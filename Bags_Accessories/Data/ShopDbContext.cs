@@ -24,5 +24,7 @@ namespace Bags_Accessories.Data
         public DbSet<CommentBag> CommentBag { get; set; }
         public DbSet<CommentAccessorie> CommentAccessorie { get; set; }
         public DbSet<ContactUs> ContactUs { get; set; }
+
+        public DbSet<OrderClient> orderClients { get; set; }
     }
 }

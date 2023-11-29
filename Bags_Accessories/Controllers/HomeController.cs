@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Drawing.Printing;
+using System.Security.Claims;
 
 namespace Bags_Accessories.Controllers
 {
@@ -22,22 +23,23 @@ namespace Bags_Accessories.Controllers
         {
             return View();
         }
+
+        public IActionResult ClientOrder()
+        {
+            return View();
+        }
+        public IActionResult Order()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
-            //    CommentBag commentBag = new CommentBag();
-            //    commentBag.BagID=4;
-            //    commentBag.CommentTXT="hi good product";
-            //    commentBag.Email="sdd@sdsd.com";
-            //    commentBag.Name="george";
-            //    _DbContext.CommentBag.Add(commentBag);
-            //    _DbContext.SaveChanges();
-
-            //var bag4 = _DbContext.Bags.Include(x=>x.BagComments).SingleOrDefault(x=>x.ID==4);
-            //var ccc = bag4.BagComments.ToList();
-
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //OrderClient order = new OrderClient();
+            //order.UserId = userId;
 
             var products = _DbContext.Bags.OrderByDescending(x => x.ID).ToList();
-            ViewBag.WomenBags = _DbContext.Bags.Where(x => x.Gender==1).OrderByDescending(x => x.ID).ToList();
+            ViewBag.WomenBags = _DbContext.Bags.Where(x => x.Gender == 1).OrderByDescending(x => x.ID).ToList();
             ViewBag.ManBags = _DbContext.Bags.Where(x => x.Gender == 2).OrderByDescending(x => x.ID).ToList();
             ViewBag.Kidbags = _DbContext.Bags.Where(x => x.Gender == 3).OrderByDescending(x => x.ID).ToList();
 
@@ -83,7 +85,7 @@ namespace Bags_Accessories.Controllers
 
         public IActionResult DetailsBag(int ID)
         {
-            var bag = _DbContext.Bags.SingleOrDefault(x => x.ID==ID);
+            var bag = _DbContext.Bags.SingleOrDefault(x => x.ID == ID);
             return View(bag);
         }
 
@@ -100,32 +102,31 @@ namespace Bags_Accessories.Controllers
             _DbContext.CommentBag.Add(Comment);
             _DbContext.SaveChanges();
 
-
-            var bag = _DbContext.Bags.SingleOrDefault(x => x.ID==Comment.BagID);
+            var bag = _DbContext.Bags.SingleOrDefault(x => x.ID == Comment.BagID);
             return View(bag);
         }
         public IActionResult DetailsAccessorie(int ID)
         {
-            var acce = _DbContext.Accessories.SingleOrDefault(x => x.ID==ID);
+            var acce = _DbContext.Accessories.SingleOrDefault(x => x.ID == ID);
             return View(acce);
         }
 
         [HttpGet]
         public IActionResult WomensBags()
         {
-            var products = _DbContext.Bags.Where(x => x.Gender==1).OrderByDescending(x => x.ID).ToList();
-
-            LoadImages();
-            return View(products);
+            ViewBag.WomenBags = _DbContext.Bags.Where(x => x.Gender == 1).OrderByDescending(x => x.ID).ToList();
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> WomensBags(string search)
         {
+            ViewBag.WomenBags = _DbContext.Bags.Where(x => x.Gender == 1).OrderByDescending(x => x.ID).ToList();
+
             LoadImages();
             if (!string.IsNullOrEmpty(search))
             {
-                var products = await _DbContext.Bags.Where(x => search!=null && x.Gender == 1 && x.Name.Contains(search)).ToListAsync();
+                var products = await _DbContext.Bags.Where(x => search != null && x.Gender == 1 && x.Name.Contains(search)).ToListAsync();
                 return View(products);
             }
             else
@@ -139,16 +140,94 @@ namespace Bags_Accessories.Controllers
         }
         public IActionResult MansBags()
         {
+            ViewBag.ManBags = _DbContext.Bags.Where(x => x.Gender == 2).OrderByDescending(x => x.ID).ToList();
             return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> MansBags(string search)
+        {
 
+            LoadImages();
+            if (!string.IsNullOrEmpty(search))
+            {
+                ViewBag.ManBags = await _DbContext.Bags.Where(x => search != null && x.Gender == 2 && x.Name.Contains(search)).ToListAsync();
+                return View();
+            }
+            else
+            {
+                ViewBag.ManBags = _DbContext.Bags.Where(x => x.Gender == 2).OrderByDescending(x => x.ID).ToList();
+                return View();
+            }
+        }
         public IActionResult MansAccessories()
         {
             return View();
         }
-        public IActionResult KidsBags()
+        public IActionResult KidsBags(string searchText = null, int? pageIndex = 1, int? pageSize = 10)
         {
-            return View();
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.Bags.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).Count() / (decimal)pageSize);
+            }
+            else
+            {
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.Bags.Where(x => x.Gender == 3).Count() / (decimal)pageSize);
+            }
+
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.Bags.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList());
+                else
+                    return View(_DbContext.Bags.Where(x => x.Gender == 3).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList());
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.Bags.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).ToList());
+                else
+                    return View(_DbContext.Bags.Where(x => x.Gender == 3).ToList());
+            }
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> KidsBags(string searchText = null)
+        {
+                int? pageSize = 10;
+                int? pageIndex = 1;
+
+                var totalPages = 0;
+                if (!string.IsNullOrEmpty(searchText))
+                {
+                    totalPages = (int)Math.Ceiling((decimal)await _DbContext.Bags.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).CountAsync() / (decimal)pageSize);
+                }
+                else
+                {
+                    totalPages = (int)Math.Ceiling((decimal)await _DbContext.Bags.Where(x => x.Gender == 3).CountAsync() / (decimal)pageSize);
+                }
+
+                ViewBag.ProductsTotalCount = totalPages;
+                ViewBag.PageIndex = pageIndex;
+                ViewBag.SearchText = searchText;
+                if (pageIndex != null && pageSize != null)
+                {
+                    if (!string.IsNullOrEmpty(searchText))
+                        return View(await _DbContext.Bags.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+                    else
+                        return View(await _DbContext.Bags.Where(x => x.Gender == 3).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(searchText))
+                        return View(await _DbContext.Bags.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).ToListAsync());
+                    else
+                        return View(await _DbContext.Bags.Where(x => x.Gender == 3).ToListAsync());
+                }
+
         }
         public IActionResult KidsAccessories()
         {
@@ -175,9 +254,9 @@ namespace Bags_Accessories.Controllers
         //    else
         //        return View();
         //}
-        
-       
-      
+
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
