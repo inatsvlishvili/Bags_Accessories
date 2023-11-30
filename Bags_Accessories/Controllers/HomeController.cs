@@ -85,7 +85,9 @@ namespace Bags_Accessories.Controllers
 
         public IActionResult DetailsBag(int ID)
         {
+            
             var bag = _DbContext.Bags.SingleOrDefault(x => x.ID == ID);
+
             return View(bag);
         }
 

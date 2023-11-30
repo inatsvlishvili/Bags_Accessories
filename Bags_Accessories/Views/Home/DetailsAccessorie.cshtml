@@ -9,30 +9,43 @@
         <div class="row">
             <div class="col-lg-6">
                 <div>
-                    <img src="~/ImageUpload/@Model.ImageName" />
+                    @if (Model.Gender == 1)
+                    {
+                        <img src="~/productImages/WomenAccessorieImg/@Model.ImageName" style="width:500px;height:600px" />
+
+                    }
+                    else if (Model.Gender == 2)
+                    {
+                        <img src="~/productImages/ManAccessorieImg/@Model.ImageName" style="width:500px;height:600px" />
+                    }
+                    else if (Model.Gender == 3)
+                    {
+                        <img src="~/productImages/KidAccessorieImg/@Model.ImageName" style="width:500px;height:600px" />
+                    }
+
                 </div>
                 <div>
                     @if (Model.Gender == 1)
                     {
-                        <label>ტიპი: ქალი</label>
+                        <label><b>ტიპი:</b> ქალი</label>
                     }
                     else if (Model.Gender == 2)
                     {
-                        <label>ტიპი: კაცი</label>
+                        <label><b>ტიპი:</b> კაცი</label>
                     }
                     else if (Model.Gender == 3)
                     {
-                        <label>ტიპი: ბავშვი</label>
+                        <label><b>ტიპი:</b> ბავშვი</label>
                     }
                 </div>
                 <div>
-                    სახელი: @Model.Name
+                    <b>სახელი:</b> @Model.Name
                 </div>
                 <div>
-                    ფასი:  @Model.Price ლარი
+                    <b>ფასი:</b>  @Model.Price ლარი
                 </div>
                 <div>
-                    დარჩენილი რაოდენობა: @Model.Quantity
+                    <b>დარჩენილი რაოდენობა:</b> @Model.Quantity
                 </div>
 
             </div>

@@ -81,7 +81,7 @@ namespace Bags_Accessories.Controllers
             prod.ImageName = imageNewFileName;
             _DbContext.Bags.Add(prod);
             _DbContext.SaveChanges();
-
+            ViewBag.Succes="წარმატებით დაემატა";
             return View();
             //. viewbagi gavaketo, warmatebit aitvirta
 

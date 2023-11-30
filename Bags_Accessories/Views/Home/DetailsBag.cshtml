@@ -9,30 +9,49 @@
         <div class="row">
             <div class="col-lg-6">
                 <div>
-                    <img src="~/productImages/@Model.ImageName" />
+                   @*  <img src="~/productImages/@Model.ImageName" /> *@
+                    <div>
+                        @if (Model.Gender == 1)
+                        {
+                            <img src="~/productImages/WomenBagImg/@Model.ImageName" style="width:500px;height:600px" />
+                        
+                        }
+                        else if (Model.Gender == 2)
+                        {
+                        <img src="~/productImages/ManBagImg/@Model.ImageName" style="width:500px;height:600px"  />
+                        }
+                        else if (Model.Gender == 3)
+                        {
+                            <img src="~/productImages/KidBagImg/@Model.ImageName" style="width:500px;height:600px" />
+                        }
+
+
+                       
+                    </div>
+
                 </div>
                 <div>
                     @if (Model.Gender == 1)
                     {
-                        <label>ტიპი: ქალი</label>
+                        <label><b>ტიპი:</b> ქალი</label>
                     }
                     else if (Model.Gender == 2)
                     {
-                        <label>ტიპი: კაცი</label>
+                        <label><b>ტიპი:</b> კაცი</label>
                     }
                     else if (Model.Gender == 3)
                     {
-                        <label>ტიპი: ბავშვი</label>
+                        <label><b>ტიპი:</b> ბავშვი</label>
                     }
                 </div>
                 <div>
-                    სახელი: @Model.Name
+                    <b>სახელი:</b> @Model.Name
                 </div>
                 <div>
-                    ფასი:  @Model.Price ლარი
+                    <b>ფასი:</b>  @Model.Price ლარი
                 </div>
                 <div>
-                    დარჩენილი რაოდენობა: @Model.Quantity
+                    <b>დარჩენილი რაოდენობა:</b> @Model.Quantity
                 </div>
 
             </div>
@@ -71,39 +90,4 @@
     </div>
 </div>
    
-
-@* <div class="panel-heading">
-    <h3 class="panel-title">კომენტარი</h3>
-</div>
-<br />
-
-<div class="col-md-6 col-sm-6">
-    <div class="form-group col-md-6 col-sm-6">
-        <form id="Comment" asp-controller="Home" asp-action="DetailsBag" method="post">
-            <input type="hidden" name="BagID" value="@Model.ID"/>
-            <div class="">
-
-                <label for="name">სახელი: </label>
-                <input type="text" id="txtFirstName" name="Name" />
-            </div>
-            <div class="">
-
-                <label for="email">მეილი: &nbsp;</label>
-                <input type="text" id="email" name="Email" />
-            </div>
-            <div class="form-group">
-
-                <label for="mobile"> კომენტარი: </label>
-
-                <textarea class="form-control  input-sm" id="comment" cols="10" rows="10" name="CommentTXT">
-            </textarea>
-
-            </div>
-            <input type="submit" class="btn btn-primary" value="დამატება" />
-
-        </form> *@
-@*   </div>
-
-</div>
- *@
 
