@@ -23,7 +23,7 @@
 <!-- ***** Products Area Starts ***** -->
 <div class="input-group md-form form-sm form-2 pl-0">
     <form id="searchForm" asp-controller="Home" asp-action="KidsBags" method="post">
-        <input name="searchText" class="form-control my-0 py-1 table-bordered" type="text" placeholder="Search" arial-label="Search" style="width:800px">
+        <input name="searchText" class="form-control my-0 py-1 table-bordered" type="text" placeholder="შეიყვანეთ საძიებო სიტყვა" arial-label="Search" style="width:800px">
         <div class="input-group-append">
 
             <button id="btnSearch" class="btn btn-primary">მოძებნა</button>
@@ -50,16 +50,17 @@
                     <div class="item">
                         <div class="thumb">
                             <div class="hover-content">
+                                
                                 <ul>
-                                    <li><a href="@("Home\\DetailsBag\\"+item.ID)"><i class="fa fa-eye"></i></a></li>
-                                    @* <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> *@
+                                    <li><a href="@("\\Home\\DetailsBag\\"+item.ID)"><i class="fa fa-eye"></i></a></li>
+                                   @*  <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> *@
                                     <li><a href=""><i class="fa fa-shopping-cart"></i></a></li>
                                 </ul>
                             </div>
-                            <a href="@("Home\\DetailsBag\\"+item.ID)"><img src="assets/images/women-01.jpg" alt=""></a>
+                            <a href="@("\\Home\\DetailsBag\\"+item.ID)"><img src="~/productImages/KidBagImg/@(item.ImageName)" alt=""></a>
                         </div>
                         <div class="down-content">
-                            <h4><a href="@("Home\\DetailsBag\\"+item.ID)">@item.Name</a></h4>
+                            <h4><a href="@("\\Home\\DetailsBag\\"+item.ID)">@item.Name</a></h4>
                             <span>@item.Price ₾</span>
                         </div>
                     </div>

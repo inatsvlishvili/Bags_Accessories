@@ -107,63 +107,164 @@ namespace Bags_Accessories.Controllers
         }
         public IActionResult DetailsAccessorie(int ID)
         {
-            var acce = _DbContext.Accessories.SingleOrDefault(x => x.ID == ID);
-            return View(acce);
+            var accessorie = _DbContext.Accessories.SingleOrDefault(x => x.ID == ID);
+            return View(accessorie);
+        }
+
+        [HttpPost]
+        public IActionResult DetailsAccessorie(CommentAccessorie Comment)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            Comment.ID = 0;
+            //Comment.CreateDate = DateTime.Now;
+            _DbContext.CommentAccessorie.Add(Comment);
+            _DbContext.SaveChanges();
+
+            var accessorie = _DbContext.Accessories.SingleOrDefault(x => x.ID == Comment.AccessorieID);
+            return View(accessorie);
         }
 
         [HttpGet]
-        public IActionResult WomensBags()
+        public IActionResult WomensBags(string searchText = null, int? pageIndex = 1, int? pageSize = 21)
         {
-            ViewBag.WomenBags = _DbContext.Bags.Where(x => x.Gender == 1).OrderByDescending(x => x.ID).ToList();
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> WomensBags(string search)
-        {
-            ViewBag.WomenBags = _DbContext.Bags.Where(x => x.Gender == 1).OrderByDescending(x => x.ID).ToList();
-
-            LoadImages();
-            if (!string.IsNullOrEmpty(search))
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
             {
-                var products = await _DbContext.Bags.Where(x => search != null && x.Gender == 1 && x.Name.Contains(search)).ToListAsync();
-                return View(products);
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.Bags.Where(x => searchText != null && x.Gender == 1 && x.Name.Contains(searchText)).Count() / (decimal)pageSize);
             }
             else
             {
-                return View(await _DbContext.Bags.Where(x => x.Gender == 1).ToListAsync());
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.Bags.Where(x => x.Gender == 1).Count() / (decimal)pageSize);
             }
-        }
-        public IActionResult WomansAccessories()
-        {
-            return View();
-        }
-        public IActionResult MansBags()
-        {
-            ViewBag.ManBags = _DbContext.Bags.Where(x => x.Gender == 2).OrderByDescending(x => x.ID).ToList();
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> MansBags(string search)
-        {
 
-            LoadImages();
-            if (!string.IsNullOrEmpty(search))
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
             {
-                ViewBag.ManBags = await _DbContext.Bags.Where(x => search != null && x.Gender == 2 && x.Name.Contains(search)).ToListAsync();
-                return View();
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.Bags.Where(x => searchText != null && x.Gender == 1 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList());
+                else
+                    return View(_DbContext.Bags.Where(x => x.Gender == 1).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList());
             }
             else
             {
-                ViewBag.ManBags = _DbContext.Bags.Where(x => x.Gender == 2).OrderByDescending(x => x.ID).ToList();
-                return View();
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.Bags.Where(x => searchText != null && x.Gender == 1 && x.Name.Contains(searchText)).ToList());
+                else
+                    return View(_DbContext.Bags.Where(x => x.Gender == 1).ToList());
             }
+
         }
-        public IActionResult MansAccessories()
+
+        [HttpPost]
+        public async Task<IActionResult> WomensBags(string searchText = null)
         {
-            return View();
+            int? pageSize = 21;
+            int? pageIndex = 1;
+
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                totalPages = (int)Math.Ceiling((decimal)await _DbContext.Bags.Where(x => searchText != null && x.Gender == 1 && x.Name.Contains(searchText)).CountAsync() / (decimal)pageSize);
+            }
+            else
+            {
+                totalPages = (int)Math.Ceiling((decimal)await _DbContext.Bags.Where(x => x.Gender == 1).CountAsync() / (decimal)pageSize);
+            }
+
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(await _DbContext.Bags.Where(x => searchText != null && x.Gender == 1 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+                else
+                    return View(await _DbContext.Bags.Where(x => x.Gender == 1).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(await _DbContext.Bags.Where(x => searchText != null && x.Gender == 1 && x.Name.Contains(searchText)).ToListAsync());
+                else
+                    return View(await _DbContext.Bags.Where(x => x.Gender == 1).ToListAsync());
+            }
+
         }
-        public IActionResult KidsBags(string searchText = null, int? pageIndex = 1, int? pageSize = 10)
+
+        public IActionResult MansBags(string searchText = null, int? pageIndex = 1, int? pageSize = 21)
+        {
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.Bags.Where(x => searchText != null && x.Gender == 2 && x.Name.Contains(searchText)).Count() / (decimal)pageSize);
+            }
+            else
+            {
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.Bags.Where(x => x.Gender == 2).Count() / (decimal)pageSize);
+            }
+
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.Bags.Where(x => searchText != null && x.Gender == 2 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList());
+                else
+                    return View(_DbContext.Bags.Where(x => x.Gender == 2).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList());
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.Bags.Where(x => searchText != null && x.Gender == 2 && x.Name.Contains(searchText)).ToList());
+                else
+                    return View(_DbContext.Bags.Where(x => x.Gender == 2).ToList());
+            }
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> MansBags(string searchText = null)
+        {
+            int? pageSize = 21;
+            int? pageIndex = 1;
+
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                totalPages = (int)Math.Ceiling((decimal)await _DbContext.Bags.Where(x => searchText != null && x.Gender == 2 && x.Name.Contains(searchText)).CountAsync() / (decimal)pageSize);
+            }
+            else
+            {
+                totalPages = (int)Math.Ceiling((decimal)await _DbContext.Bags.Where(x => x.Gender == 2).CountAsync() / (decimal)pageSize);
+            }
+
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(await _DbContext.Bags.Where(x => searchText != null && x.Gender == 2 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+                else
+                    return View(await _DbContext.Bags.Where(x => x.Gender == 3).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(await _DbContext.Bags.Where(x => searchText != null && x.Gender == 2 && x.Name.Contains(searchText)).ToListAsync());
+                else
+                    return View(await _DbContext.Bags.Where(x => x.Gender == 2).ToListAsync());
+            }
+
+        }
+
+        public IActionResult KidsBags(string searchText = null, int? pageIndex = 1, int? pageSize = 21)
         {
             var totalPages = 0;
             if (!string.IsNullOrEmpty(searchText))
@@ -197,42 +298,244 @@ namespace Bags_Accessories.Controllers
         [HttpPost]
         public async Task<IActionResult> KidsBags(string searchText = null)
         {
-                int? pageSize = 10;
-                int? pageIndex = 1;
+            int? pageSize = 21;
+            int? pageIndex = 1;
 
-                var totalPages = 0;
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                totalPages = (int)Math.Ceiling((decimal)await _DbContext.Bags.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).CountAsync() / (decimal)pageSize);
+            }
+            else
+            {
+                totalPages = (int)Math.Ceiling((decimal)await _DbContext.Bags.Where(x => x.Gender == 3).CountAsync() / (decimal)pageSize);
+            }
+
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
+            {
                 if (!string.IsNullOrEmpty(searchText))
-                {
-                    totalPages = (int)Math.Ceiling((decimal)await _DbContext.Bags.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).CountAsync() / (decimal)pageSize);
-                }
+                    return View(await _DbContext.Bags.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
                 else
-                {
-                    totalPages = (int)Math.Ceiling((decimal)await _DbContext.Bags.Where(x => x.Gender == 3).CountAsync() / (decimal)pageSize);
-                }
-
-                ViewBag.ProductsTotalCount = totalPages;
-                ViewBag.PageIndex = pageIndex;
-                ViewBag.SearchText = searchText;
-                if (pageIndex != null && pageSize != null)
-                {
-                    if (!string.IsNullOrEmpty(searchText))
-                        return View(await _DbContext.Bags.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
-                    else
-                        return View(await _DbContext.Bags.Where(x => x.Gender == 3).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
-                }
+                    return View(await _DbContext.Bags.Where(x => x.Gender == 3).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(await _DbContext.Bags.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).ToListAsync());
                 else
-                {
-                    if (!string.IsNullOrEmpty(searchText))
-                        return View(await _DbContext.Bags.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).ToListAsync());
-                    else
-                        return View(await _DbContext.Bags.Where(x => x.Gender == 3).ToListAsync());
-                }
+                    return View(await _DbContext.Bags.Where(x => x.Gender == 3).ToListAsync());
+            }
 
         }
-        public IActionResult KidsAccessories()
+
+        public IActionResult WomensAccessories(string searchText = null, int? pageIndex = 1, int? pageSize = 21)
         {
-            return View();
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.Accessories.Where(x => searchText != null && x.Gender == 1 && x.Name.Contains(searchText)).Count() / (decimal)pageSize);
+            }
+            else
+            {
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.Accessories.Where(x => x.Gender == 1).Count() / (decimal)pageSize);
+            }
+
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.Accessories.Where(x => searchText != null && x.Gender == 1 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList());
+                else
+                    return View(_DbContext.Accessories.Where(x => x.Gender == 1).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList());
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.Accessories.Where(x => searchText != null && x.Gender == 1 && x.Name.Contains(searchText)).ToList());
+                else
+                    return View(_DbContext.Accessories.Where(x => x.Gender == 1).ToList());
+            }
+
         }
+
+        [HttpPost]
+        public async Task<IActionResult> WomensAccessories(string searchText = null)
+        {
+            int? pageSize = 21;
+            int? pageIndex = 1;
+
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                totalPages = (int)Math.Ceiling((decimal)await _DbContext.Accessories.Where(x => searchText != null && x.Gender == 1 && x.Name.Contains(searchText)).CountAsync() / (decimal)pageSize);
+            }
+            else
+            {
+                totalPages = (int)Math.Ceiling((decimal)await _DbContext.Accessories.Where(x => x.Gender == 1).CountAsync() / (decimal)pageSize);
+            }
+
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(await _DbContext.Accessories.Where(x => searchText != null && x.Gender == 1 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+                else
+                    return View(await _DbContext.Accessories.Where(x => x.Gender == 1).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(await _DbContext.Accessories.Where(x => searchText != null && x.Gender == 1 && x.Name.Contains(searchText)).ToListAsync());
+                else
+                    return View(await _DbContext.Accessories.Where(x => x.Gender == 1).ToListAsync());
+            }
+
+        }
+
+        public IActionResult MansAccessories(string searchText = null, int? pageIndex = 1, int? pageSize = 21)
+        {
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.Accessories.Where(x => searchText != null && x.Gender == 2 && x.Name.Contains(searchText)).Count() / (decimal)pageSize);
+            }
+            else
+            {
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.Accessories.Where(x => x.Gender == 2).Count() / (decimal)pageSize);
+            }
+
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.Accessories.Where(x => searchText != null && x.Gender == 2 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList());
+                else
+                    return View(_DbContext.Accessories.Where(x => x.Gender == 2).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList());
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.Accessories.Where(x => searchText != null && x.Gender == 2 && x.Name.Contains(searchText)).ToList());
+                else
+                    return View(_DbContext.Accessories.Where(x => x.Gender == 2).ToList());
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MansAccessories(string searchText = null)
+        {
+            int? pageSize = 21;
+            int? pageIndex = 1;
+
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                totalPages = (int)Math.Ceiling((decimal)await _DbContext.Accessories.Where(x => searchText != null && x.Gender == 2 && x.Name.Contains(searchText)).CountAsync() / (decimal)pageSize);
+            }
+            else
+            {
+                totalPages = (int)Math.Ceiling((decimal)await _DbContext.Accessories.Where(x => x.Gender == 2).CountAsync() / (decimal)pageSize);
+            }
+
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(await _DbContext.Accessories.Where(x => searchText != null && x.Gender == 2 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+                else
+                    return View(await _DbContext.Accessories.Where(x => x.Gender == 2).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(await _DbContext.Accessories.Where(x => searchText != null && x.Gender == 2 && x.Name.Contains(searchText)).ToListAsync());
+                else
+                    return View(await _DbContext.Accessories.Where(x => x.Gender == 2).ToListAsync());
+            }
+
+        }
+
+
+        public IActionResult KidsAccessories(string searchText = null, int? pageIndex = 1, int? pageSize = 21)
+        {
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.Accessories.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).Count() / (decimal)pageSize);
+            }
+            else
+            {
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.Accessories.Where(x => x.Gender == 3).Count() / (decimal)pageSize);
+            }
+
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.Accessories.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList());
+                else
+                    return View(_DbContext.Accessories.Where(x => x.Gender == 3).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToList());
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.Accessories.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).ToList());
+                else
+                    return View(_DbContext.Accessories.Where(x => x.Gender == 3).ToList());
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> KidsAccessories(string searchText = null)
+        {
+            int? pageSize = 21;
+            int? pageIndex = 1;
+
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                totalPages = (int)Math.Ceiling((decimal)await _DbContext.Accessories.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).CountAsync() / (decimal)pageSize);
+            }
+            else
+            {
+                totalPages = (int)Math.Ceiling((decimal)await _DbContext.Accessories.Where(x => x.Gender == 3).CountAsync() / (decimal)pageSize);
+            }
+
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(await _DbContext.Accessories.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+                else
+                    return View(await _DbContext.Accessories.Where(x => x.Gender == 3).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync());
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(await _DbContext.Accessories.Where(x => searchText != null && x.Gender == 3 && x.Name.Contains(searchText)).ToListAsync());
+                else
+                    return View(await _DbContext.Accessories.Where(x => x.Gender == 3).ToListAsync());
+            }
+
+        }
+
 
         [HttpGet]
         public IActionResult Login()
