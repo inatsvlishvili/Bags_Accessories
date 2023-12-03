@@ -65,7 +65,7 @@ namespace Bags_Accessories.Controllers
             _DbContext.OrderClients.Add(order);
             _DbContext.SaveChanges();
 
-            ViewBag.send = "წარმატებით გაიგზავნა";
+            ViewBag.send = "წარმატებით დასრულდა ყიდვა";
             var call = _DbContext.OrderClients.SingleOrDefault(x => x.ID == order.ID);
             return View(call);
         }
@@ -78,18 +78,22 @@ namespace Bags_Accessories.Controllers
             //OrderClient order = new OrderClient();
             //order.UserId = userId;
 
-            var products = _DbContext.Bags.OrderByDescending(x => x.ID).ToList();
+            //var products = _DbContext.Bags.OrderByDescending(x => x.ID).ToList();
             ViewBag.WomenBags = _DbContext.Bags.Where(x => x.Gender == 1).OrderByDescending(x => x.ID).ToList();
             ViewBag.ManBags = _DbContext.Bags.Where(x => x.Gender == 2).OrderByDescending(x => x.ID).ToList();
             ViewBag.Kidbags = _DbContext.Bags.Where(x => x.Gender == 3).OrderByDescending(x => x.ID).ToList();
+            ViewBag.WomenAccessorie = _DbContext.Accessories.Where(x => x.Gender == 1).OrderByDescending(x => x.ID).ToList();
+            ViewBag.ManAccessorie = _DbContext.Accessories.Where(x => x.Gender == 2).OrderByDescending(x => x.ID).ToList();
+            ViewBag.KidAccessorie = _DbContext.Accessories.Where(x => x.Gender == 3).OrderByDescending(x => x.ID).ToList();
 
             LoadImages();
-            return View(products);
+            //return View(products);
+            return View();
 
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(string search)
+        public IActionResult Index(string search)
         {
 
             LoadImages();
@@ -98,12 +102,18 @@ namespace Bags_Accessories.Controllers
                 ViewBag.WomenBags = _DbContext.Bags.Where(x => x.Gender == 1 && x.Name.Contains(search)).OrderByDescending(x => x.ID).ToList();
                 ViewBag.ManBags = _DbContext.Bags.Where(x => x.Gender == 2 && x.Name.Contains(search)).OrderByDescending(x => x.ID).ToList();
                 ViewBag.Kidbags = _DbContext.Bags.Where(x => x.Gender == 3 && x.Name.Contains(search)).OrderByDescending(x => x.ID).ToList();
+                ViewBag.WomenAccessorie = _DbContext.Accessories.Where(x => x.Gender == 1 && x.Name.Contains(search)).OrderByDescending(x => x.ID).ToList();
+                ViewBag.ManAccessorie = _DbContext.Accessories.Where(x => x.Gender == 2 && x.Name.Contains(search)).OrderByDescending(x => x.ID).ToList();
+                ViewBag.KidAccessorie = _DbContext.Accessories.Where(x => x.Gender == 3 && x.Name.Contains(search)).OrderByDescending(x => x.ID).ToList();
             }
             else
             {
                 ViewBag.WomenBags = _DbContext.Bags.Where(x => x.Gender == 1).OrderByDescending(x => x.ID).ToList();
                 ViewBag.ManBags = _DbContext.Bags.Where(x => x.Gender == 2).OrderByDescending(x => x.ID).ToList();
                 ViewBag.Kidbags = _DbContext.Bags.Where(x => x.Gender == 3).OrderByDescending(x => x.ID).ToList();
+                ViewBag.WomenAccessorie = _DbContext.Accessories.Where(x => x.Gender == 1).OrderByDescending(x => x.ID).ToList();
+                ViewBag.ManAccessorie = _DbContext.Accessories.Where(x => x.Gender == 2).OrderByDescending(x => x.ID).ToList();
+                ViewBag.KidAccessorie = _DbContext.Accessories.Where(x => x.Gender == 3).OrderByDescending(x => x.ID).ToList();
             }
             return View();
         }
@@ -155,25 +165,22 @@ namespace Bags_Accessories.Controllers
         public IActionResult DetailsAccessorie(int ID)
         {
             var accessorie = _DbContext.Accessories.SingleOrDefault(x => x.ID == ID);
+            ViewBag.Comments = _DbContext.Comment.Where(x => x.AccessorieID == accessorie.ID).ToList();
             return View(accessorie);
         }
 
         [HttpPost]
-        //public IActionResult DetailsAccessorie(CommentAccessorie Comment)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View();
-        //    }
+        public IActionResult DetailsAccessorie(CommentClient Comment)
+        {
+            Comment.CreatedateTime = DateTime.Now;
+            Comment.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _DbContext.Comment.Add(Comment);
+            _DbContext.SaveChanges();
 
-        //    Comment.ID = 0;
-        //    //Comment.CreateDate = DateTime.Now;
-        //    _DbContext.CommentAccessorie.Add(Comment);
-        //    _DbContext.SaveChanges();
-
-        //    var accessorie = _DbContext.Accessories.SingleOrDefault(x => x.ID == Comment.AccessorieID);
-        //    return View(accessorie);
-        //}
+            var accessorie = _DbContext.Accessories.SingleOrDefault(x => x.ID == Comment.AccessorieID);
+            ViewBag.Comments = _DbContext.Comment.Where(x => x.AccessorieID == accessorie.ID).ToList();
+            return View(accessorie);
+        }
 
         [HttpGet]
         public IActionResult WomensBags(string searchText = null, int? pageIndex = 1, int? pageSize = 21)

@@ -17,6 +17,6 @@ namespace Bags_Accessories.Models
         public string ImageName { get; set; }
         [NotMapped]
         public IFormFile ImageFile { set; get; }
-        //public List<CommentBag> BagComments { get; set; }        
+             
     }
 }

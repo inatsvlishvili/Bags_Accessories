@@ -5,18 +5,17 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>BagAdd</h1>
+<h1>ჩანთის დამატება</h1>
 
-<h4>Bag</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="BagAdd" enctype="multipart/form-data">
-            <!--enctype="multipart/form-data" unda mashin roca forma sheicavs failis atvirtvas-->
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label>
-                @* <input asp-for="Gender" class="form-control" /> *@
+                <option value=>ტიპი</option>
                 <select asp-for="Gender">
                     <option value="1">ქალი</option>
                     <option value="2">კაცი</option>
@@ -25,39 +24,42 @@
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <option value=>სახელი</option>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+                <option value=>ფასი</option>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
+                <option value=>რაოდენობა</option>
                 <input asp-for="Quantity" class="form-control" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="file" name="ImageFile" /><!--imnage upload control-->
-               @*  <span asp-validation-for="ImageFile" class="text-danger"></span> *@
+                <option value=>სურათი</option>
+                <input asp-for="ImageName" class="form-control" />
+                <span asp-validation-for="ImageName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="file" name="ImageFile" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="დამატება" class="btn btn-primary" />
             </div>
 
             <div style="color:green">@ViewBag.Succes</div>
             <div style="color:red">@ViewBag.Error</div>
         </form>
     </div>
-    
 </div>
-
 <div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

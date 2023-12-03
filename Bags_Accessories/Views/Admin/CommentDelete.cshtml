@@ -1,7 +1,7 @@
-﻿@model Bags_Accessories.Models.ContactUs
+﻿@model Bags_Accessories.Models.CommentClient
 
 @{
-    ViewData["Title"] = "ContactDelete";
+    ViewData["Title"] = "CommentDelete";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -10,8 +10,7 @@
 <h3>ნამდვილად გსურთ წაშლა?</h3>
 <div>
     <hr />
-   
- <table>
+  <table>
      <tr>
             <td>Name: </td>
             <td>@Model.Name</td>
@@ -20,11 +19,7 @@
             <td>Email: </td>
             <td>@Model.Email</td>
         </tr>
-        <tr>
-            <td>Phone: </td>
-            <td>@Model.Phone</td>
-        </tr>
-        <tr>
+                <tr>
             <td>Comment: </td>
             <td>@Model.CommentTXT</td>
         </tr>
@@ -34,9 +29,9 @@
         </tr>
  </table>
 
-    <form asp-action="ContactDelete">
+    <form asp-action="CommentDelete">
         <input type="hidden" asp-for="ID" />
         <input type="submit" value="წაშლა" class="btn btn-danger" /> |
-        <a asp-action="ContactClient">უკან დაბრუნება</a>
+        <a asp-action="CommentClient">უკან დაბრუნება</a>
     </form>
 </div>

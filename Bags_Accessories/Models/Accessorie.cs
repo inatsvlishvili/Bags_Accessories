@@ -14,7 +14,7 @@ namespace Bags_Accessories.Models
         public int Price { get; set; }
         [Required]
         public int Quantity { get; set; }
-        [Required]
+       
         public string ImageName { get; set; }
         [NotMapped]
         public IFormFile ImageFile { set; get; }

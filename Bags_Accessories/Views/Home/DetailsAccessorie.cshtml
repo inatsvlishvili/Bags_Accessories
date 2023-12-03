@@ -25,6 +25,8 @@
 
                 </div>
                 <div>
+                    <label><b>ა ქ ს ე ს უ ა რ ი</b></label>
+                    <br />
                     @if (Model.Gender == 1)
                     {
                         <label><b>ტიპი:</b> ქალი</label>
@@ -52,6 +54,27 @@
         </div>
     </div>
 </div>
+<a href="/Home/ClientOrder/?AccessorieID=@Model.ID" class="btn btn-primary">ყიდვა</a>
+<br />
+<table>
+    @foreach (var item in ViewBag.Comments)
+    {
+
+        <tr>
+            <td><b>სახელი: </b></td>
+            <td>@item.Name</td>
+        </tr>
+        <tr>
+            <td><b>კომენტარი:</b> </td>
+            <td>@item.CommentTXT</td>
+        </tr>
+        <tr>
+            <td><b>დრო:</b> </td>
+            <td>@item.CreatedateTime</td>
+        </tr>
+
+    }
+</table>
 <div class="contact-us">
     <div class="col-lg-4">
         <div class="section-heading">
@@ -59,6 +82,7 @@
             @*  <span></span> *@
         </div>
         <form id="comment" controller="Home" action="DetailsAccessorie" method="post">
+            <input type="hidden" name="AccessorieID" value="@Model.ID" />
             <div class="row">
                 <div class="col-lg-6">
                     <fieldset>
@@ -72,7 +96,7 @@
                 </div>
                 <div class="col-lg-12">
                     <fieldset>
-                        <textarea name="message" rows="6" id="message" placeholder="ტექსტი" required=""></textarea>
+                        <textarea name="commentTXT" rows="6" id="CommentTXT" placeholder="ტექსტი" required=""></textarea>
                     </fieldset>
                 </div>
                 <div class="col-lg-12">
