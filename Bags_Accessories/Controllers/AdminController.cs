@@ -20,16 +20,19 @@ namespace Bags_Accessories.Controllers
             _webHostEnvironment = webHostEnvironment;
             _DbContext = DbContext;
         }
-
         public IActionResult index()
         {
+            var inbox = _DbContext.ContactUs.OrderByDescending(x => x.ID).ToList();
+            ViewBag.Inbox = inbox;
             return View();
         }
+      
       
 
         [HttpGet]
         public IActionResult BagAdd()
         {
+
             return View();
         }
 
@@ -106,7 +109,54 @@ namespace Bags_Accessories.Controllers
         //_DbContext.SaveChanges();
 
         //return RedirectToAction("Display");
+        public IActionResult ContactDelete(int id)
+        {
+            var obj = _DbContext.ContactUs.Find(id);
 
+            return View(obj);
+        }
+
+        [HttpPost]
+        public IActionResult ContactDelete(ContactUs con)
+        {
+            /////var prodToDelete = _DbContext.Products.Find(prod.ID);
+            /////_DbContext.Products.Remove(prodToDelete);
+            _DbContext.ContactUs.Remove(con);
+            _DbContext.SaveChanges();
+            return RedirectToAction("ContactClient");
+        }
+        public IActionResult ContactClient(string searchText = null, int? pageIndex = 1, int? pageSize = 10)
+
+        {
+
+            var totalPages = 0;
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.ContactUs.Where(x => searchText != null && x.Name.Contains(searchText)).Count() / (decimal)pageSize);
+            }
+            else
+            {
+                totalPages = (int)Math.Ceiling((decimal)_DbContext.ContactUs.Count() / (decimal)pageSize);
+            }
+
+            ViewBag.ProductsTotalCount = totalPages;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.SearchText = searchText;
+            if (pageIndex != null && pageSize != null)
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.ContactUs.Where(x => searchText != null && x.Name.Contains(searchText)).Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value));
+                else
+                    return View(_DbContext.ContactUs.Skip((pageIndex.Value - 1) * pageSize.Value).Take(pageSize.Value));
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchText))
+                    return View(_DbContext.ContactUs.Where(x => searchText != null && x.Name.Contains(searchText)));
+                else
+                    return View(_DbContext.ContactUs);
+            }
+        }
         public IActionResult AllBag(string searchText = null, int? pageIndex = 1, int? pageSize = 10)
 
         {

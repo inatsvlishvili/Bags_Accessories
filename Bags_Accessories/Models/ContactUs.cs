@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Bags_Accessories.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bags_Accessories.Models
@@ -17,5 +18,7 @@ namespace Bags_Accessories.Models
         public string CommentTXT {  get; set; }
         
         public DateTime CreatedateTime { get; set; }
+
+        
     }
 }

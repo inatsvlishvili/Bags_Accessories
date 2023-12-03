@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Bags_Accessories.Models.ContactUs>
+
+@{
+    ViewData["Title"] = "ContactClient";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>შეტყობინებები</h1>
+
+<div class="input-group md-form form-sm form-2 pl-0">
+    <form id="searchForm" asp-controller="admin" asp-action="ContactClient" method="get">
+        <input name="searchText" class="form-control my-0 py-1 table-bordered" type="text" placeholder="Search" arial-label="Search" style="width:400px">
+        <div class="input-group-append">
+
+            <button id="btnSearch" class="btn btn-primary">მოძებნა</button>
+        </div>
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                სახელი
+            </th>
+            <th>
+                მეილი
+            </th>
+            <th>
+                ტელეფონი
+            </th>
+            <th>
+                შეტყობინება
+            </th>
+            <th>
+                თარიღი
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CommentTXT)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedateTime)
+                </td>
+                <td>
+                    <a asp-action="ContactDelete" asp-route-id="@item.ID">წაშლა</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+
+        <li class="page-item"><a class="page-link" href="/Admin/ContactClient/?searchText=@ViewBag.SearchText&pageIndex=@(ViewBag.PageIndex-1)">უკან</a></li>
+        @for (int i = 1; i <= ViewBag.ProductsTotalCount; i++)
+        {
+            <li class="page-item @(ViewBag.PageIndex==i?"active":"")"><a class="page-link" href="/Admin/ContactClient/?searchText=@ViewBag.SearchText&pageIndex=@i">@i</a></li>
+        }
+        <li class="page-item"><a class="page-link" href="/Admin/ContactClient/?searchText=@ViewBag.SearchText&pageIndex=@(ViewBag.PageIndex+1)">წინ</a></li>
+    </ul>
+</nav>

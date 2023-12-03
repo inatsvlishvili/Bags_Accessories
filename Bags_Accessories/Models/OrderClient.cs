@@ -19,11 +19,11 @@ namespace Bags_Accessories.Models
         [Required]
         public string Address { get; set; }
         public string CommentTXT { get; set; }
-        public int BagID { get; set; }
+        public int? BagID { get; set; }
         [ForeignKey("BagID")]
         public Bag Bag { get; set; }
 
-        public int AccessorieID { get; set; }
+        public int? AccessorieID { get; set; }
         [ForeignKey("AccessorieID")]
         public Accessorie Accessorie { get; set; }
         public DateTime CreatedateTime { get; set; }

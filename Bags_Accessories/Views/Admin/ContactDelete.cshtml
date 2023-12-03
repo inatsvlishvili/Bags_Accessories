@@ -1,0 +1,61 @@
+﻿@model Bags_Accessories.Models.ContactUs
+
+@{
+    ViewData["Title"] = "ContactDelete";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>შეტყობინება</h1>
+
+<h3>ნამდვილად გსურთ წაშლა?</h3>
+<div>
+    <hr />
+   @*  <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            <label>მეილი</label>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayFor(model => model.Phone)
+        </dt>
+        <dd class="col-sm-2">
+            
+            @Html.DisplayFor(model => model.CommentTXT)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayFor(model => model.CreatedateTime)
+        </dt>
+    </dl>
+ *@
+ <table>
+     <tr>
+            <td>Name: </td>
+            <td>@Model.Name</td>
+     </tr>
+        <tr>
+            <td>Email: </td>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <td>Phone: </td>
+            <td>@Model.Phone</td>
+        </tr>
+        <tr>
+            <td>Comment: </td>
+            <td>@Model.CommentTXT</td>
+        </tr>
+        <tr>
+            <td>Created Date: </td>
+            <td>@Model.CreatedateTime.ToString("dd-MM-yyyy HH:mm:ss")</td>
+        </tr>
+ </table>
+
+    <form asp-action="ContactDelete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="წაშლა" class="btn btn-danger" /> |
+        <a asp-action="ContactClient">უკან დაბრუნება</a>
+    </form>
+</div>

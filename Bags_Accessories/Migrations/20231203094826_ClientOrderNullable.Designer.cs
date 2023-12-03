@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bags_Accessories.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20231129171249_OrderClientUserID")]
-    partial class OrderClientUserID
+    [Migration("20231203094826_ClientOrderNullable")]
+    partial class ClientOrderNullable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,7 +155,7 @@ namespace Bags_Accessories.Migrations
                     b.ToTable("Bags");
                 });
 
-            modelBuilder.Entity("Bags_Accessories.Models.CommentAccessorie", b =>
+            modelBuilder.Entity("Bags_Accessories.Models.CommentClient", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -163,7 +163,10 @@ namespace Bags_Accessories.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("AccessorieID")
+                    b.Property<int?>("AccessorieID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BagID")
                         .HasColumnType("int");
 
                     b.Property<string>("CommentTXT")
@@ -180,45 +183,19 @@ namespace Bags_Accessories.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
 
                     b.HasIndex("AccessorieID");
 
-                    b.ToTable("CommentAccessorie");
-                });
-
-            modelBuilder.Entity("Bags_Accessories.Models.CommentBag", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("BagID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CommentTXT")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
                     b.HasIndex("BagID");
 
-                    b.ToTable("CommentBag");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("Bags_Accessories.Models.ContactUs", b =>
@@ -260,14 +237,14 @@ namespace Bags_Accessories.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("AccessorieID")
+                    b.Property<int?>("AccessorieID")
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BagID")
+                    b.Property<int?>("BagID")
                         .HasColumnType("int");
 
                     b.Property<string>("CommentTXT")
@@ -302,7 +279,7 @@ namespace Bags_Accessories.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("orderClients");
+                    b.ToTable("OrderClients");
                 });
 
             modelBuilder.Entity("Bags_Accessories.Models.Settings", b =>
@@ -455,41 +432,36 @@ namespace Bags_Accessories.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Bags_Accessories.Models.CommentAccessorie", b =>
+            modelBuilder.Entity("Bags_Accessories.Models.CommentClient", b =>
                 {
                     b.HasOne("Bags_Accessories.Models.Accessorie", "Accessorie")
                         .WithMany()
-                        .HasForeignKey("AccessorieID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AccessorieID");
+
+                    b.HasOne("Bags_Accessories.Models.Bag", "Bag")
+                        .WithMany()
+                        .HasForeignKey("BagID");
+
+                    b.HasOne("Bags_Accessories.Areas.Identity.Data.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Accessorie");
-                });
-
-            modelBuilder.Entity("Bags_Accessories.Models.CommentBag", b =>
-                {
-                    b.HasOne("Bags_Accessories.Models.Bag", "Bag")
-                        .WithMany("BagComments")
-                        .HasForeignKey("BagID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Bag");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Bags_Accessories.Models.OrderClient", b =>
                 {
                     b.HasOne("Bags_Accessories.Models.Accessorie", "Accessorie")
                         .WithMany()
-                        .HasForeignKey("AccessorieID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AccessorieID");
 
                     b.HasOne("Bags_Accessories.Models.Bag", "Bag")
                         .WithMany()
-                        .HasForeignKey("BagID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BagID");
 
                     b.HasOne("Bags_Accessories.Areas.Identity.Data.ApplicationUser", "User")
                         .WithMany()
@@ -551,11 +523,6 @@ namespace Bags_Accessories.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Bags_Accessories.Models.Bag", b =>
-                {
-                    b.Navigation("BagComments");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,7 +18,6 @@ namespace Bags_Accessories.Models
         public string ImageName { get; set; }
         [NotMapped]
         public IFormFile ImageFile { set; get; }
-        //public int ProductId { set; get; }
-        //public virtual Product Product { set; get; }
+       
     }
 }

@@ -21,10 +21,11 @@ namespace Bags_Accessories.Data
 
         public DbSet<Accessorie> Accessories { get; set; }
         public DbSet<Settings> Settings { get; set; }
-        public DbSet<CommentBag> CommentBag { get; set; }
-        public DbSet<CommentAccessorie> CommentAccessorie { get; set; }
+
+        public DbSet<CommentClient> Comment { get; set; }
+
         public DbSet<ContactUs> ContactUs { get; set; }
 
-        public DbSet<OrderClient> orderClients { get; set; }
+        public DbSet<OrderClient> OrderClients { get; set; }
     }
 }

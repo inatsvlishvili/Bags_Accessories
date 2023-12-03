@@ -1,6 +1,7 @@
 ﻿using Bags_Accessories.Data;
 using Bags_Accessories.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -19,19 +20,58 @@ namespace Bags_Accessories.Controllers
             _logger = logger;
             _DbContext = DbContext;
         }
+
         public IActionResult Contact()
         {
             return View();
+
+        }
+        [HttpPost]
+        public IActionResult Contact(ContactUs contact)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            //contact.ID = 0;
+            contact.CreatedateTime = DateTime.Now;
+            _DbContext.ContactUs.Add(contact);
+            _DbContext.SaveChanges();
+
+            ViewBag.send = "წარმატებით გაიგზავნა";
+            var call = _DbContext.ContactUs.SingleOrDefault(x => x.ID == contact.ID);
+            return View(call);
         }
 
-        public IActionResult ClientOrder()
+        public IActionResult ClientOrder(int? BagId, int? AccessorieId)
         {
+            ViewBag.BagId = BagId;
+            ViewBag.AccessorieId = AccessorieId;
             return View();
         }
-        public IActionResult Order()
+        [HttpPost]
+        public IActionResult ClientOrder(OrderClient order)
         {
-            return View();
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            order.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            order.CreatedateTime = DateTime.Now;
+            _DbContext.OrderClients.Add(order);
+            _DbContext.SaveChanges();
+
+            ViewBag.send = "წარმატებით გაიგზავნა";
+            var call = _DbContext.OrderClients.SingleOrDefault(x => x.ID == order.ID);
+            return View(call);
         }
+
+
+      
         public IActionResult Index()
         {
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -53,16 +93,19 @@ namespace Bags_Accessories.Controllers
         {
 
             LoadImages();
-
             if (!string.IsNullOrEmpty(search))
             {
-                var products = await _DbContext.Bags.Where(x => x.Name.Contains(search)).ToListAsync();
-                return View(products);
+                ViewBag.WomenBags = _DbContext.Bags.Where(x => x.Gender == 1 && x.Name.Contains(search)).OrderByDescending(x => x.ID).ToList();
+                ViewBag.ManBags = _DbContext.Bags.Where(x => x.Gender == 2 && x.Name.Contains(search)).OrderByDescending(x => x.ID).ToList();
+                ViewBag.Kidbags = _DbContext.Bags.Where(x => x.Gender == 3 && x.Name.Contains(search)).OrderByDescending(x => x.ID).ToList();
             }
             else
             {
-                return View(await _DbContext.Bags.ToListAsync());
+                ViewBag.WomenBags = _DbContext.Bags.Where(x => x.Gender == 1).OrderByDescending(x => x.ID).ToList();
+                ViewBag.ManBags = _DbContext.Bags.Where(x => x.Gender == 2).OrderByDescending(x => x.ID).ToList();
+                ViewBag.Kidbags = _DbContext.Bags.Where(x => x.Gender == 3).OrderByDescending(x => x.ID).ToList();
             }
+            return View();
         }
 
         private void LoadImages()
@@ -85,26 +128,28 @@ namespace Bags_Accessories.Controllers
 
         public IActionResult DetailsBag(int ID)
         {
-            
-            var bag = _DbContext.Bags.SingleOrDefault(x => x.ID == ID);
 
+            var bag = _DbContext.Bags.SingleOrDefault(x => x.ID == ID);
+            ViewBag.Comments = _DbContext.Comment.Where(x => x.BagID == bag.ID).ToList();
             return View(bag);
         }
 
         [HttpPost]
-        public IActionResult DetailsBag(CommentBag Comment)
+        public IActionResult DetailsBag(CommentClient Comment)
         {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
-
-            Comment.ID = 0;
-            //Comment.CreateDate = DateTime.Now;
-            _DbContext.CommentBag.Add(Comment);
+            //if (!ModelState.IsValid)
+            //{
+            //    return View();
+            //}
+            
+            //Comment.ID = 0;
+            Comment.CreatedateTime = DateTime.Now;
+            Comment.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _DbContext.Comment.Add(Comment);
             _DbContext.SaveChanges();
 
             var bag = _DbContext.Bags.SingleOrDefault(x => x.ID == Comment.BagID);
+            ViewBag.Comments = _DbContext.Comment.Where(x => x.BagID == bag.ID).ToList();
             return View(bag);
         }
         public IActionResult DetailsAccessorie(int ID)
@@ -114,21 +159,21 @@ namespace Bags_Accessories.Controllers
         }
 
         [HttpPost]
-        public IActionResult DetailsAccessorie(CommentAccessorie Comment)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
+        //public IActionResult DetailsAccessorie(CommentAccessorie Comment)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View();
+        //    }
 
-            Comment.ID = 0;
-            //Comment.CreateDate = DateTime.Now;
-            _DbContext.CommentAccessorie.Add(Comment);
-            _DbContext.SaveChanges();
+        //    Comment.ID = 0;
+        //    //Comment.CreateDate = DateTime.Now;
+        //    _DbContext.CommentAccessorie.Add(Comment);
+        //    _DbContext.SaveChanges();
 
-            var accessorie = _DbContext.Accessories.SingleOrDefault(x => x.ID == Comment.AccessorieID);
-            return View(accessorie);
-        }
+        //    var accessorie = _DbContext.Accessories.SingleOrDefault(x => x.ID == Comment.AccessorieID);
+        //    return View(accessorie);
+        //}
 
         [HttpGet]
         public IActionResult WomensBags(string searchText = null, int? pageIndex = 1, int? pageSize = 21)

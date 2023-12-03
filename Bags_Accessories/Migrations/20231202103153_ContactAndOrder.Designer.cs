@@ -4,6 +4,7 @@ using Bags_Accessories.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bags_Accessories.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    partial class ShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231202103153_ContactAndOrder")]
+    partial class ContactAndOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,49 +155,6 @@ namespace Bags_Accessories.Migrations
                     b.ToTable("Bags");
                 });
 
-            modelBuilder.Entity("Bags_Accessories.Models.CommentClient", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int?>("AccessorieID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BagID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CommentTXT")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("AccessorieID");
-
-                    b.HasIndex("BagID");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comment");
-                });
-
             modelBuilder.Entity("Bags_Accessories.Models.ContactUs", b =>
                 {
                     b.Property<int>("ID")
@@ -234,14 +194,14 @@ namespace Bags_Accessories.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int?>("AccessorieID")
+                    b.Property<int>("AccessorieID")
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("BagID")
+                    b.Property<int>("BagID")
                         .HasColumnType("int");
 
                     b.Property<string>("CommentTXT")
@@ -429,36 +389,19 @@ namespace Bags_Accessories.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Bags_Accessories.Models.CommentClient", b =>
-                {
-                    b.HasOne("Bags_Accessories.Models.Accessorie", "Accessorie")
-                        .WithMany()
-                        .HasForeignKey("AccessorieID");
-
-                    b.HasOne("Bags_Accessories.Models.Bag", "Bag")
-                        .WithMany()
-                        .HasForeignKey("BagID");
-
-                    b.HasOne("Bags_Accessories.Areas.Identity.Data.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Accessorie");
-
-                    b.Navigation("Bag");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Bags_Accessories.Models.OrderClient", b =>
                 {
                     b.HasOne("Bags_Accessories.Models.Accessorie", "Accessorie")
                         .WithMany()
-                        .HasForeignKey("AccessorieID");
+                        .HasForeignKey("AccessorieID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Bags_Accessories.Models.Bag", "Bag")
                         .WithMany()
-                        .HasForeignKey("BagID");
+                        .HasForeignKey("BagID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Bags_Accessories.Areas.Identity.Data.ApplicationUser", "User")
                         .WithMany()
