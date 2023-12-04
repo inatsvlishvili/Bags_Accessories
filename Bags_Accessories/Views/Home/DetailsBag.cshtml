@@ -13,16 +13,22 @@
                     <div>
                         @if (Model.Gender == 1)
                         {
-                            <img src="~/productImages/WomenBagImg/@Model.ImageName" style="width:500px;height:600px" />
+                            @* <img src="~/productImages/WomenBagImg/@Model.ImageName" style="width:500px;height:600px" /> *@
+                            <img src="~/productImages/WomenBagImg/@Model.ImageName"/>
+
 
                         }
                         else if (Model.Gender == 2)
                         {
-                            <img src="~/productImages/ManBagImg/@Model.ImageName" style="width:500px;height:600px" />
+                            @* <img src="~/productImages/ManBagImg/@Model.ImageName" style="width:500px;height:600px" /> *@
+                            <img src="~/productImages/ManBagImg/@Model.ImageName" />
+
                         }
                         else if (Model.Gender == 3)
                         {
-                            <img src="~/productImages/KidBagImg/@Model.ImageName" style="width:500px;height:600px" />
+                            @* <img src="~/productImages/KidBagImg/@Model.ImageName" style="width:500px;height:600px" /> *@
+                            <img src="~/productImages/KidBagImg/@Model.ImageName" />
+
                         }
 
                     </div>

@@ -110,15 +110,15 @@ namespace Bags_Accessories.Controllers
             var FileDic = "";
             if (prod.Gender == 1)
             {
-                FileDic = "productImages/WomenBagImg";
+                FileDic = "productImages/WomenAccessorieImg";
             }
             else if (prod.Gender == 2)
             {
-                FileDic = "productImages/ManBagImg";
+                FileDic = "productImages/ManAccessorieImg";
             }
             else if (prod.Gender == 3)
             {
-                FileDic = "productImages/KidBagImg";
+                FileDic = "productImages/KidAccessorieImg";
             }
             else
             {
