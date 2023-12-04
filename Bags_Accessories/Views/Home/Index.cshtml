@@ -17,7 +17,8 @@
                                 <a href="#">ყ ი დ ვ ა</a>
                             </div>
                         </div>
-                        <img src="~/assets/images/" alt="" asp-append-version="true">
+                        @* <img src="~/PageImg/" alt="" asp-append-version="true"> *@
+                        <img src="~/PageImg/@ViewBag.MainImg1FileName">
                         @* <img src="~/ImageUpload/359783848_795054928662447_624772607954803698_n.jpg" alt="" asp-append-version="true"> *@
                     </div>
                 </div>
@@ -41,7 +42,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <img src="~/imageupload/@ViewBag.MainImg2FileName">
+                                    <img src="~/PageImg/@ViewBag.MainImg2FileName">
 
                                 </div>
                             </div>
@@ -62,7 +63,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <img src="~/assets/images/@ViewBag.MainImg3FileName">
+                                    <img src="~/PageImg/@ViewBag.MainImg3FileName">
                                 </div>
                             </div>
                         </div>
@@ -82,7 +83,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <img src="~/assets/images/@ViewBag.MainImg4FileName">
+                                    <img src="~/PageImg/@ViewBag.MainImg4FileName">
                                 </div>
                             </div>
                         </div>
@@ -102,7 +103,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <img src="~/assets/images/@ViewBag.MainImg5FileName">
+                                    <img src="~/PageImg/@ViewBag.MainImg5FileName">
                                 </div>
                             </div>
                         </div>
@@ -117,15 +118,15 @@
 
 <div class="input-group md-form form-sm form-2 pl-0">
     <form id="searchForm" asp-controller="Home" asp-action="Index">
-        <input name="search" class="form-control my-0 py-1 table-bordered" type="text" placeholder="Search" arial-label="Search">
+        <input name="search" class="form-control my-0 py-1 table-bordered" type="text" placeholder="შეიყვანეთ საძიებო სიტყვა" arial-label="Search" style="width:800px">
         <div class="input-group-append">
 
-            <button id="btnSearch" class="btn btn-primary">Search</button>
+            <button id="btnSearch" class="btn btn-primary">მოძებნა</button>
 
-            <span class="input-grouptext-red lighten-3" id="basic-text1">
-                <i class="fa-fast-backward fa-search text-grey"
-                   aria-hidden="true"></i>
-            </span>
+            @* <span class="input-grouptext-red lighten-3" id="basic-text1">
+            <i class="fa-fast-backward fa-search text-grey"
+            aria-hidden="true"></i>
+            </span> *@
         </div>
     </form>
 </div>
@@ -161,7 +162,7 @@
                                         <ul>
                                             <li><a href="@("Home\\DetailsBag\\"+item.ID)"><i class="fa fa-eye"></i></a></li>
                                             @* <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> *@
-                                            <li><a href=""><i class="fa fa-shopping-cart"></i></a></li>
+                                            @* <li><a href="@("Home\\DetailsBag\\"+item.ID)"><i class="fa fa-shopping-cart"></i></a></li> *@
                                         </ul>
                                     </div>
                                     @* <img src="assets/images/men-01.jpg" alt=""> *@
@@ -187,7 +188,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="section-heading">
-                    <h2>მამაკაცის ჩანთები</h2>
+                    <h2>კაცის ჩანთები</h2>
                     @* <span>Details to details is what makes Hexashop different from the other themes.</span> *@
                 </div>
             </div>
@@ -206,7 +207,7 @@
                                         <ul>
                                             <li><a href="@("Home\\DetailsBag\\"+item.ID)"><i class="fa fa-eye"></i></a></li>
                                             @* <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> *@
-                                            <li><a href=""><i class="fa fa-shopping-cart"></i></a></li>
+                                            @*  <li><a href=@("Home\\ClientOrder\\+BagId=ManBags.ID")><i class="fa fa-shopping-cart"></i></a></li> *@
                                         </ul>
                                     </div>
                                     <a href="@("Home\\DetailsBag\\"+item.ID)"><img src="assets/images/women-01.jpg" alt=""></a>
@@ -250,7 +251,7 @@
                                         <ul>
                                             <li><a href="@("Home\\DetailsBag\\"+item.ID)"><i class="fa fa-eye"></i></a></li>
                                             @*  <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> *@
-                                            <li><a href=""><i class="fa fa-shopping-cart"></i></a></li>
+                                            @*  <li><a href=""><i class="fa fa-shopping-cart"></i></a></li> *@
                                         </ul>
                                     </div>
                                     <a href="@("Home\\DetailsBag\\"+item.ID)"><img src="assets/images/women-01.jpg" alt=""></a>
@@ -272,7 +273,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="section-heading">
-                    <h2>მამაკაცის ჩანთები</h2>
+                    <h2>ქალის აქსესუარები</h2>
                     @* <span>Details to details is what makes Hexashop different from the other themes.</span> *@
                 </div>
             </div>
@@ -291,7 +292,7 @@
                                         <ul>
                                             <li><a href="@("Home\\DetailsAccessorie\\"+item.ID)"><i class="fa fa-eye"></i></a></li>
                                             @* <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> *@
-                                            <li><a href=""><i class="fa fa-shopping-cart"></i></a></li>
+                                            @* <li><a href=""><i class="fa fa-shopping-cart"></i></a></li> *@
                                         </ul>
                                     </div>
                                     <a href="@("Home\\DetailsAccessorie\\"+item.ID)"><img src="assets/images/women-01.jpg" alt=""></a>
@@ -314,7 +315,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="section-heading">
-                    <h2>მამაკაცის ჩანთები</h2>
+                    <h2>კაცის აქსესუარები</h2>
                     @* <span>Details to details is what makes Hexashop different from the other themes.</span> *@
                 </div>
             </div>
@@ -333,7 +334,7 @@
                                         <ul>
                                             <li><a href="@("Home\\DetailsAccessorie\\"+item.ID)"><i class="fa fa-eye"></i></a></li>
                                             @* <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> *@
-                                            <li><a href=""><i class="fa fa-shopping-cart"></i></a></li>
+                                            @*  <li><a href=""><i class="fa fa-shopping-cart"></i></a></li> *@
                                         </ul>
                                     </div>
                                     <a href="@("Home\\DetailsAccessorie\\"+item.ID)"><img src="assets/images/women-01.jpg" alt=""></a>
@@ -356,7 +357,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="section-heading">
-                    <h2>მამაკაცის ჩანთები</h2>
+                    <h2>ბავშვის აქსესუარები</h2>
                     @* <span>Details to details is what makes Hexashop different from the other themes.</span> *@
                 </div>
             </div>
@@ -375,7 +376,7 @@
                                         <ul>
                                             <li><a href="@("Home\\DetailsAccessorie\\"+item.ID)"><i class="fa fa-eye"></i></a></li>
                                             @* <li><a href="single-product.html"><i class="fa fa-star"></i></a></li> *@
-                                            <li><a href=""><i class="fa fa-shopping-cart"></i></a></li>
+                                            @*  <li><a href=""><i class="fa fa-shopping-cart"></i></a></li> *@
                                         </ul>
                                     </div>
                                     <a href="@("Home\\DetailsAccessorie\\"+item.ID)"><img src="assets/images/women-01.jpg" alt=""></a>
@@ -386,7 +387,6 @@
                                 </div>
                             </div>
                         }
-
                     </div>
                 </div>
             </div>

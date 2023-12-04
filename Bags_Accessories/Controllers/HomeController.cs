@@ -18,7 +18,7 @@ namespace Bags_Accessories.Controllers
         public HomeController(ILogger<HomeController> logger, ShopDbContext DbContext)
         {
             _logger = logger;
-            _DbContext = DbContext;
+            _DbContext = DbContext;            
         }
 
         public IActionResult Contact()
@@ -120,19 +120,41 @@ namespace Bags_Accessories.Controllers
 
         private void LoadImages()
         {
+
             Settings mainImg1 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "MainPageImg1");
             Settings mainImg2 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "MainPageImg2");
             Settings mainImg3 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "MainPageImg3");
             Settings mainImg4 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "MainPageImg4");
             Settings mainImg5 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "MainPageImg5");
 
-            if (mainImg1 != null || mainImg2 != null || mainImg3 != null || mainImg4 != null || mainImg5 != null)
+            Settings otherImg1 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "OtherPageImg1");
+            Settings otherImg2 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "OtherPageImg2");
+            Settings otherImg3 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "OtherPageImg3");
+            Settings otherImg4 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "OtherPageImg4");
+            Settings otherImg5 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "OtherPageImg5");
+            Settings otherImg6 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "OtherPageImg6");
+            Settings otherImg7 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "OtherPageImg7");
+            Settings otherImg8 = _DbContext.Settings.SingleOrDefault(x => x.SettingName == "OtherPageImg8");
+
+            if (mainImg1 != null || mainImg2 != null || mainImg3 != null || mainImg4 != null || mainImg5 != null || otherImg1 != null || otherImg2 != null || otherImg3 != null || otherImg4 != null || otherImg5 != null || otherImg6 != null || otherImg7 != null || otherImg8 != null)
             {
                 ViewBag.MainImg1FileName = mainImg1.SettingValue;
                 ViewBag.MainImg2FileName = mainImg2.SettingValue;
                 ViewBag.MainImg3FileName = mainImg3.SettingValue;
                 ViewBag.MainImg4FileName = mainImg4.SettingValue;
                 ViewBag.MainImg5FileName = mainImg5.SettingValue;
+
+
+                ViewBag.WomenBagImg = otherImg1.SettingValue;
+                ViewBag.ManBagImg = otherImg2.SettingValue;
+                ViewBag.KidBagImg = otherImg3.SettingValue;
+                ViewBag.WomenAccessorieImg = otherImg4.SettingValue; 
+                ViewBag.ManAccessorieImg = otherImg5.SettingValue;
+                ViewBag.KidAccessorieImg = otherImg6.SettingValue;
+                ViewBag.ContactImg = otherImg7.SettingValue;
+                ViewBag.OrderImg = otherImg8.SettingValue;
+
+
             }
         }
 
@@ -195,6 +217,8 @@ namespace Bags_Accessories.Controllers
                 totalPages = (int)Math.Ceiling((decimal)_DbContext.Bags.Where(x => x.Gender == 1).Count() / (decimal)pageSize);
             }
 
+            LoadImages();
+
             ViewBag.ProductsTotalCount = totalPages;
             ViewBag.PageIndex = pageIndex;
             ViewBag.SearchText = searchText;
@@ -230,6 +254,7 @@ namespace Bags_Accessories.Controllers
             {
                 totalPages = (int)Math.Ceiling((decimal)await _DbContext.Bags.Where(x => x.Gender == 1).CountAsync() / (decimal)pageSize);
             }
+            LoadImages();
 
             ViewBag.ProductsTotalCount = totalPages;
             ViewBag.PageIndex = pageIndex;
@@ -248,7 +273,6 @@ namespace Bags_Accessories.Controllers
                 else
                     return View(await _DbContext.Bags.Where(x => x.Gender == 1).ToListAsync());
             }
-
         }
 
         public IActionResult MansBags(string searchText = null, int? pageIndex = 1, int? pageSize = 21)

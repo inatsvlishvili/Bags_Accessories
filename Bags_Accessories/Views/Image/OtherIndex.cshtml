@@ -4,12 +4,14 @@
 }
 <h3 style="color:black">მთავარი გვერდის სურათების მართვა</h3>
 
-@* <img src="~/ImageUpload/pic1.jpg" alt="User Avatar" class="" style="width:450px;height:300px"> *@
-<form method="post" enctype="multipart/form-data" asp-asp-controller="Img" asp-action="Otherindex">
+<img src="~/ImageUpload/pic1.jpg" alt="User Avatar" class="" style="width:450px;height:300px">
+<form method="post" enctype="multipart/form-data" asp-asp-controller="Img" asp-action="OtherIndex">
     <input type="file" name="imgfile" />
     <input type="hidden" name="imgIndex" value="1" />
     <input type="submit" value="Upload.." />
-    <hr/>
+    <hr />
+
+    <h3 style="color:green">@ViewBag.Message1</h3>
 </form>
    @*  <h3 style="color:green">@ViewBag.Message1</h3>
 

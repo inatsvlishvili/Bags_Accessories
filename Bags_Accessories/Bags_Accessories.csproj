@@ -43,6 +43,7 @@
     <Folder Include="wwwroot\docs\assets\js\pages\" />
     <Folder Include="wwwroot\docs\assets\plugins\overlayScrollbars\js\" />
     <Folder Include="wwwroot\lib\jquery-validation\dist\" />
+    <Folder Include="wwwroot\OtherPageImg\" />
     <Folder Include="wwwroot\PageImg\" />
     <Folder Include="wwwroot\plugins\bootstrap-switch\js\" />
     <Folder Include="wwwroot\plugins\codemirror\addon\comment\" />

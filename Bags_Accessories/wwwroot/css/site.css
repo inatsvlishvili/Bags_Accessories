@@ -20,3 +20,31 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+.page-headingCustom {
+    margin-top: 160px;
+    margin-bottom: 30px;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+    .page-headingCustom .inner-content {
+        padding: 150px 0px;
+        text-align: center;
+    }
+
+        .page-headingCustom .inner-content h2 {
+            font-size: 52px;
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .page-headingCustom .inner-content span {
+            font-size: 16px;
+            font-weight: 500;
+            color: #fff;
+            font-style: italic;
+        }
