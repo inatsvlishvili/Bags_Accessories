@@ -22,7 +22,7 @@ namespace Bags_Accessories
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();//view ro ganaxldes updates mere
+            builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             builder.Services.AddControllersWithViews(); // damatebuli
             builder.Services.AddRazorPages(); // damatebuli
 
