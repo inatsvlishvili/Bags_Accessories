@@ -20,7 +20,7 @@ namespace Bags_Accessories
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ShopDbContext>();
 
-            // Add services to the container.
+            // Add services to the container
             builder.Services.AddControllersWithViews();
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             builder.Services.AddControllersWithViews(); 
